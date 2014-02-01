@@ -1,4 +1,4 @@
-// @file  server.c
+// @file  server.cpp
 // @brief Everything you need for a sample server.
 //
 // Copyright (C) 2014 John F. Sullivan, III
