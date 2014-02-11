@@ -14,3 +14,7 @@
 
 # Emacs Backup Files
 *~
+
+# Generated directories
+bin/
+doc/
