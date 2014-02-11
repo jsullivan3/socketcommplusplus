@@ -16,7 +16,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 CPP=g++
-all: server tests runtests
+all: server tests doc runtests
 
 INC := -Iinclude/
 LIBINC := include/connector.h
@@ -27,6 +27,9 @@ TESTOBJS := tests/connector-test.o
 TESTOUTPUT := bin/tests
 OBJS := $(SERVEROBJS) $(LIBOBJS) $(TESTOBJS) $(SERVEROUTPUT) $(TESTOUTPUT)
 CPPFLAGS=-Wall $(INC)
+
+doc:
+	doxygen doxygen.config
 
 lib/connector.o: lib/connector.cpp $(LIBINC)
 	$(CPP) $(CPPFLAGS) -c $< -o $@
