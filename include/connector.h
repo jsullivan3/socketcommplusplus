@@ -1,5 +1,5 @@
-// @file  server.cpp
-// @brief Everything you need for a sample server.
+// @file  connector.h
+// @brief Base class that defines a socket connection.
 //
 // Copyright (C) 2014 John F. Sullivan, III
 //
@@ -17,21 +17,14 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <iostream>
-#include <connector.h>
-
-/// main() - create a server thread.
-///
-/// @param argc Number of arguments to the executable.
-/// @param argv Array of arguments to the executable.
-///
-/// @return @c 0 on success, @c errno value on error
-int main(int argc, char **argv)
+class Connector
 {
-    int status = 0;
-    Connector *myConnection = new Connector();
+public:
+    Connector();
+    ~Connector();
+    int getSocket();
 
-    std::cout << "=== Exiting with status " << status << std::endl;
-    delete myConnection;
-    return(status);
-}
+private:
+    void CreateSocket(int);
+    int sock;
+};

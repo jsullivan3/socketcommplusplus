@@ -16,19 +16,39 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 CPP=g++
-all: server
+all: server tests runtests
 
+INC := -Iinclude/
+LIBINC := include/connector.h
+LIBOBJS := lib/connector.o
 SERVEROBJS := server/server.o
-OBJS := $(SERVEROBJS)
+SERVEROUTPUT := bin/server
+TESTOBJS := tests/connector-test.o
+TESTOUTPUT := bin/tests
+OBJS := $(SERVEROBJS) $(LIBOBJS) $(TESTOBJS) $(SERVEROUTPUT) $(TESTOUTPUT)
+CPPFLAGS=-Wall $(INC)
 
-bin/:
-	mkdir -p bin/
-
-server/server.o: server/server.cpp
+lib/connector.o: lib/connector.cpp $(LIBINC)
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
-server: bin/ $(SERVEROBJS)
-	$(CPP) $(CPPFLAGS) $(SERVEROBJS) -o bin/server
+server/server.o: server/server.cpp $(LIBINC)
+	$(CPP) $(CPPFLAGS) -c $< -o $@
+
+tests/connector-test.o: tests/connector-test.cpp
+	$(CPP) $(CPPFLAGS) -c $< -o $@
+
+lib: $(LIBOBJS)
+
+bin/:
+	mkdir -p bin
+server: bin/ lib $(SERVEROBJS)
+	$(CPP) $(CPPFLAGS) $(SERVEROBJS) $(LIBOBJS) -o $(SERVEROUTPUT)
+
+tests: bin/ lib $(TESTOBJS) $(LIBOBJS)
+	$(CPP) $(CPPFLAGS) -lcppunit $(TESTOBJS) $(LIBOBJS) -o $(TESTOUTPUT)
+
+runtests: $(SERVEROUTPUT) $(TESTOUTPUT)
+	bin/tests
 
 clean:
-	rm -rf *.o lib/*.o $(OBJS) doc/ bin/
+	rm -rf $(OBJS) doc/ bin/
